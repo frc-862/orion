@@ -17,8 +17,8 @@ public class Shooter extends SubsystemBase {
     /** Creates a new Shooter. */
     public Shooter() {
       // TODO: get motor numbers
-      topMotor = new TalonFX(0);
-      bottomMotor = new TalonFX(0);
+      topMotor = new TalonFX(6);
+      bottomMotor = new TalonFX(5);
 
       CommandScheduler.getInstance().registerSubsystem(this);
     }
