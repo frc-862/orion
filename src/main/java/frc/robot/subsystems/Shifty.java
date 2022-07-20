@@ -13,8 +13,9 @@ public class Shifty extends SubsystemBase {
     private Value currentState;
 
     public Shifty() {
-        CommandScheduler.getInstance().registerSubsystem(this);
         shiftDown();
+
+        CommandScheduler.getInstance().registerSubsystem(this);
     }
 
     @Override

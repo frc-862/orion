@@ -4,6 +4,9 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.*;
@@ -11,6 +14,10 @@ import frc.robot.constants.*;
 public class Shooter extends SubsystemBase {
         private TalonSRX topMotor;
         private TalonSRX bottomMotor;
+
+        private ShuffleboardTab demoTab = Shuffleboard.getTab("Demo");
+        private NetworkTableEntry maxShooterPowerEntry = demoTab.add("max shooter power", Constants.DEFAULT_SHOOTER_POWER).getEntry();
+        private double maxShooterPower;
 
         public Shooter() {
             topMotor = new TalonSRX(RobotMap.SHOOTER_TOP);
@@ -30,8 +37,13 @@ public class Shooter extends SubsystemBase {
             CommandScheduler.getInstance().registerSubsystem(this);
         }
 
+        @Override
+        public void periodic() {
+            maxShooterPower = maxShooterPowerEntry.getDouble(Constants.DEFAULT_SHOOTER_POWER);
+        }
+
         public void setPower(double power) {
-            topMotor.set(TalonSRXControlMode.PercentOutput, power);
+            topMotor.set(TalonSRXControlMode.PercentOutput, power * maxShooterPower);
         }
 
         public void stop() {
