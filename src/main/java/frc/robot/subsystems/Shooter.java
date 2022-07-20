@@ -1,37 +1,40 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.*;
 
 public class Shooter extends SubsystemBase {
-    private TalonFX topMotor;
-    private TalonFX bottomMotor;
+        private TalonSRX topMotor;
+        private TalonSRX bottomMotor;
 
-    /** Creates a new Shooter. */
-    public Shooter() {
-      // TODO: get motor numbers
-      topMotor = new TalonFX(6);
-      bottomMotor = new TalonFX(5);
+        public Shooter() {
+            topMotor = new TalonSRX(RobotMap.SHOOTER_TOP);
+            bottomMotor = new TalonSRX(RobotMap.SHOOTER_BOTTOM);
 
-      CommandScheduler.getInstance().registerSubsystem(this);
-    }
+            topMotor.configFactoryDefault();
+            bottomMotor.configFactoryDefault();
 
-    @Override
-    public void periodic() {}
+            topMotor.setInverted(Constants.SHOOTER_TOP_INVERT);
+            bottomMotor.setInverted(Constants.SHOOTER_BOTTOM_INVERT);
 
-    public void setPower(double power) {
-        topMotor.set(TalonFXControlMode.PercentOutput, power);
-        bottomMotor.set(TalonFXControlMode.PercentOutput, power);
-    }
-    
-    public void stop() {
-      setPower(0d);
-    }
+            topMotor.setNeutralMode(NeutralMode.Coast);
+            bottomMotor.setNeutralMode(NeutralMode.Coast);
+
+            bottomMotor.follow(topMotor);
+
+            CommandScheduler.getInstance().registerSubsystem(this);
+        }
+
+        public void setPower(double power) {
+            topMotor.set(TalonSRXControlMode.PercentOutput, power);
+        }
+
+        public void stop() {
+            setPower(0d);
+        }
 }

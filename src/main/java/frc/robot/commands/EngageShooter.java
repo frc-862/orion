@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
@@ -11,22 +7,17 @@ import frc.robot.subsystems.Shooter;
 
 public class EngageShooter extends CommandBase {
     private Shooter shooter;
-
     private DoubleSupplier power;
 
     public EngageShooter(Shooter shooter, DoubleSupplier power) {
-    this.shooter = shooter;
-    this.power = power;
-
-    addRequirements(shooter);
+        this.shooter = shooter;
+        this.power = power;
+        addRequirements(shooter);
     }
 
     @Override
-    public void initialize() {}
-
-    @Override
     public void execute() {
-    shooter.setPower(power.getAsDouble());
+        shooter.setPower(power.getAsDouble());
     }
 
     @Override
